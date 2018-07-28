@@ -60,8 +60,8 @@ def find(word, words, seen, target, path):
         path.pop()
 
 
-time_start = time.time()
 
+cannotUse = []
 while 1:
     fname = input('输入字典文件:')
     start = input('输入开始单词:')
@@ -86,13 +86,25 @@ while 1:
     if isInDictory(target):
         print(target + " 不在字典中，请重新输入\n")
         continue
+    if input('你想限制某些单词不能在路径中使用么？ (y/n) :') == 'y':
+        while 1:
+            i = input('输入单词，输入-1退出输入 :')
+            if i != '-1' :
+                if not checkWord(i):
+                    cannotUse.append(i)
+                else:
+                    print('这好像不是一个单词')
+            else:
+                break
     print('输入正确，开始计算...')
+    time_start = time.time()
     break
 while True:
     start = 'lead'
     words = []
     for line in lines:
         word = line.rstrip()
+        if word in cannotUse: continue
         if len(word) == len(start):
             words.append(word)
     target = 'gold'
